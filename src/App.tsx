@@ -17,7 +17,9 @@ import MyBooks from "./pages/MyBooks";
 import Suggest from "./pages/Suggest";
 import Profile from "./pages/Profile";
 import StudentDashboard from "./pages/StudentDashboard";
+import TeacherDashboard from "./pages/TeacherDashboard";
 import LibrarianDashboard from "./pages/LibrarianDashboard";
+import BookDetail from "./pages/BookDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,7 +45,9 @@ const App = () => (
             <Route path="/suggest" element={<Suggest />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/my-dashboard" element={<StudentDashboard />} />
+            <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
             <Route path="/dashboard" element={<LibrarianDashboard />} />
+            <Route path="/book/:id" element={<BookDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
