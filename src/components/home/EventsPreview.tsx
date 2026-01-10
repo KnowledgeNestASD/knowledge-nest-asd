@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { CalendarDays, ArrowRight, MapPin, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -46,6 +47,19 @@ const placeholderEvents: Event[] = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0 },
+};
+
 export function EventsPreview({ events, isLoading }: EventsPreviewProps) {
   const displayEvents = events?.length ? events : placeholderEvents;
 
@@ -81,22 +95,34 @@ export function EventsPreview({ events, isLoading }: EventsPreviewProps) {
             ))}
           </div>
         ) : (
-          <div className="space-y-4">
-            {displayEvents.slice(0, 3).map((event) => (
-              <article
+          <motion.div 
+            className="space-y-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {displayEvents.slice(0, 3).map((event, index) => (
+              <motion.article
                 key={event.id}
+                variants={cardVariants}
+                whileHover={{ x: 4 }}
+                transition={{ type: 'spring', stiffness: 300 }}
                 className="group flex flex-col sm:flex-row gap-4 bg-card rounded-xl p-4 shadow-sm hover:shadow-md transition-all border border-border/50"
               >
                 {/* Date Badge */}
                 <div className="flex-shrink-0">
-                  <div className="flex h-20 w-20 flex-col items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  <motion.div 
+                    className="flex h-20 w-20 flex-col items-center justify-center rounded-lg bg-primary text-primary-foreground"
+                    whileHover={{ scale: 1.05 }}
+                  >
                     <span className="text-2xl font-bold">
                       {format(new Date(event.event_date), 'd')}
                     </span>
                     <span className="text-xs uppercase">
                       {format(new Date(event.event_date), 'MMM')}
                     </span>
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* Event Details */}
@@ -132,9 +158,9 @@ export function EventsPreview({ events, isLoading }: EventsPreviewProps) {
                     </Button>
                   </Link>
                 </div>
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

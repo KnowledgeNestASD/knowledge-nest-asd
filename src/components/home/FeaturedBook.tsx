@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Star, BookOpen, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,7 +21,12 @@ export function FeaturedBook({ book }: FeaturedBookProps) {
     return (
       <section className="py-12 lg:py-16">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="featured-book-card p-8 lg:p-12">
+          <motion.div 
+            className="featured-book-card p-8 lg:p-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
             <div className="flex items-center gap-2 mb-6">
               <Star className="h-5 w-5 text-accent-gold" />
               <span className="font-semibold text-accent-gold">Featured Book of the Month</span>
@@ -31,7 +37,7 @@ export function FeaturedBook({ book }: FeaturedBookProps) {
                 No featured book selected. Check back soon!
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     );
@@ -40,15 +46,34 @@ export function FeaturedBook({ book }: FeaturedBookProps) {
   return (
     <section className="py-12 lg:py-16">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="featured-book-card p-8 lg:p-12">
-          <div className="flex items-center gap-2 mb-6">
+        <motion.div 
+          className="featured-book-card p-8 lg:p-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="flex items-center gap-2 mb-6"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
             <Star className="h-5 w-5 text-accent-gold fill-accent-gold" />
             <span className="font-semibold text-accent-gold">Featured Book of the Month</span>
-          </div>
+          </motion.div>
 
           <div className="grid gap-8 lg:grid-cols-[250px_1fr] lg:items-center">
             {/* Book Cover */}
-            <div className="mx-auto lg:mx-0">
+            <motion.div 
+              className="mx-auto lg:mx-0"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, type: 'spring' }}
+              whileHover={{ scale: 1.05 }}
+            >
               {book.cover_image_url ? (
                 <img
                   src={book.cover_image_url}
@@ -63,10 +88,16 @@ export function FeaturedBook({ book }: FeaturedBookProps) {
                   </div>
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {/* Book Details */}
-            <div className="space-y-4 text-center lg:text-left">
+            <motion.div 
+              className="space-y-4 text-center lg:text-left"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
               {book.genre && (
                 <Badge variant="secondary" className="bg-accent-orange/10 text-accent-orange border-0">
                   {book.genre.name}
@@ -88,8 +119,8 @@ export function FeaturedBook({ book }: FeaturedBookProps) {
               )}
 
               <div className="flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start pt-2">
-                <Link to={`/catalogue?book=${book.id}`}>
-                  <Button className="gap-2">
+                <Link to={`/book/${book.id}`}>
+                  <Button className="gap-2 shadow-lg shadow-primary/20">
                     View Book
                     <ArrowRight className="h-4 w-4" />
                   </Button>
@@ -100,9 +131,9 @@ export function FeaturedBook({ book }: FeaturedBookProps) {
                   </Button>
                 </Link>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
