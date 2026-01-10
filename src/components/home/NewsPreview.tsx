@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Newspaper, ArrowRight, Calendar, Pin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -51,9 +52,22 @@ const placeholderNews: NewsItem[] = [
 ];
 
 const categoryColors: Record<string, string> = {
-  'New Arrivals': 'bg-accent-green/10 text-accent-green',
-  'Notice': 'bg-accent-orange/10 text-accent-orange',
-  'Upcoming Activities': 'bg-primary/10 text-primary',
+  'New Arrivals': 'bg-accent-green/10 text-accent-green border-accent-green/20',
+  'Notice': 'bg-accent-orange/10 text-accent-orange border-accent-orange/20',
+  'Upcoming Activities': 'bg-primary/10 text-primary border-primary/20',
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
 export function NewsPreview({ news, isLoading }: NewsPreviewProps) {
@@ -91,26 +105,39 @@ export function NewsPreview({ news, isLoading }: NewsPreviewProps) {
             ))}
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {displayNews.slice(0, 3).map((item) => (
-              <article
+          <motion.div 
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {displayNews.slice(0, 3).map((item, index) => (
+              <motion.article
                 key={item.id}
+                variants={cardVariants}
+                whileHover={{ y: -4 }}
                 className="group relative bg-card rounded-xl p-6 shadow-sm hover:shadow-md transition-all border border-border/50"
               >
                 {/* Pinned Indicator */}
                 {item.is_pinned && (
-                  <div className="absolute -top-2 -right-2">
+                  <motion.div 
+                    className="absolute -top-2 -right-2"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: index * 0.1 + 0.3, type: 'spring' }}
+                  >
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-orange text-white shadow-md">
                       <Pin className="h-4 w-4" />
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Category Badge */}
                 {item.category && (
                   <Badge 
                     variant="secondary" 
-                    className={categoryColors[item.category] || 'bg-muted text-muted-foreground'}
+                    className={categoryColors[item.category] || 'bg-muted text-muted-foreground border'}
                   >
                     {item.category}
                   </Badge>
@@ -139,9 +166,9 @@ export function NewsPreview({ news, isLoading }: NewsPreviewProps) {
                     </Button>
                   </Link>
                 </div>
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

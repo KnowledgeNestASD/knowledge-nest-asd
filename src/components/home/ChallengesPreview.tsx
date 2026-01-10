@@ -1,9 +1,14 @@
-import { Link } from 'react-router-dom';
-import { Trophy, Target, BookOpen, Users, ArrowRight, Clock } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Trophy, Target, BookOpen, Users, ArrowRight, Clock, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useState } from 'react';
 
 interface Challenge {
   id: string;
@@ -70,8 +75,70 @@ function getDaysRemaining(endDate: string): number {
   return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export function ChallengesPreview({ challenges, isLoading }: ChallengesPreviewProps) {
   const displayChallenges = challenges?.length ? challenges : placeholderChallenges;
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [joiningId, setJoiningId] = useState<string | null>(null);
+
+  const handleJoin = async (challengeId: string) => {
+    if (!user) {
+      toast({
+        title: 'Sign in required',
+        description: 'Please sign in to join reading challenges.',
+        variant: 'destructive',
+      });
+      navigate('/login');
+      return;
+    }
+
+    setJoiningId(challengeId);
+    
+    const { error } = await supabase
+      .from('challenge_participants')
+      .insert({
+        challenge_id: challengeId,
+        user_id: user.id,
+        progress: 0,
+        completed: false,
+      });
+
+    if (error) {
+      if (error.code === '23505') {
+        toast({
+          title: 'Already joined!',
+          description: 'You have already joined this challenge.',
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: 'Failed to join challenge. Please try again.',
+          variant: 'destructive',
+        });
+      }
+    } else {
+      toast({
+        title: 'Challenge joined!',
+        description: 'You have successfully joined this reading challenge!',
+      });
+    }
+    
+    setJoiningId(null);
+  };
 
   return (
     <section className="py-12 lg:py-16 bg-muted/30">
@@ -105,16 +172,24 @@ export function ChallengesPreview({ challenges, isLoading }: ChallengesPreviewPr
             ))}
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <motion.div 
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             {displayChallenges.slice(0, 3).map((challenge) => {
               const config = challengeTypeConfig[challenge.challenge_type] || challengeTypeConfig.book_count;
               const Icon = config.icon;
               const daysRemaining = getDaysRemaining(challenge.end_date);
 
               return (
-                <div
+                <motion.div
                   key={challenge.id}
-                  className="challenge-card bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-all"
+                  variants={cardVariants}
+                  whileHover={{ y: -4 }}
+                  className="challenge-card bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-border/50"
                 >
                   {/* Badge Icon */}
                   <div className="flex items-start justify-between mb-4">
@@ -122,7 +197,13 @@ export function ChallengesPreview({ challenges, isLoading }: ChallengesPreviewPr
                       <Icon className={cn('h-6 w-6', config.color)} />
                     </div>
                     {challenge.badge_icon && (
-                      <span className="text-2xl">{challenge.badge_icon}</span>
+                      <motion.span 
+                        className="text-2xl"
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                      >
+                        {challenge.badge_icon}
+                      </motion.span>
                     )}
                   </div>
 
@@ -151,17 +232,27 @@ export function ChallengesPreview({ challenges, isLoading }: ChallengesPreviewPr
                       <Clock className="h-3 w-3 mr-1" />
                       {daysRemaining} days left
                     </Badge>
-                    <Link to={`/challenges`}>
-                      <Button size="sm" variant="ghost" className="gap-1">
-                        Join
-                        <ArrowRight className="h-3 w-3" />
-                      </Button>
-                    </Link>
+                    <Button 
+                      size="sm" 
+                      variant="ghost" 
+                      className="gap-1"
+                      disabled={joiningId === challenge.id}
+                      onClick={() => handleJoin(challenge.id)}
+                    >
+                      {joiningId === challenge.id ? (
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                      ) : (
+                        <>
+                          Join
+                          <ArrowRight className="h-3 w-3" />
+                        </>
+                      )}
+                    </Button>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         )}
       </div>
     </section>
