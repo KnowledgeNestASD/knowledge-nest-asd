@@ -7,6 +7,7 @@ import { NewsPreview } from '@/components/home/NewsPreview';
 import { EventsPreview } from '@/components/home/EventsPreview';
 import { QuickActions } from '@/components/home/QuickActions';
 import { ReaderSpotlight } from '@/components/home/ReaderSpotlight';
+import { QuillAIChatbot } from '@/components/QuillAIChatbot';
 import { supabase } from '@/integrations/supabase/client';
 
 const Index = () => {
@@ -83,6 +84,7 @@ const Index = () => {
       <NewsPreview news={news} isLoading={isLoading} />
       <EventsPreview events={events} isLoading={isLoading} />
       <ReaderSpotlight />
+      <QuillAIChatbot />
     </Layout>
   );
 };
