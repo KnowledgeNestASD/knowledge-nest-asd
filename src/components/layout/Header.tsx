@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, BookOpen, User, LogIn, ChevronDown, Feather } from 'lucide-react';
+import { Menu, X, BookOpen, User, LogIn, ChevronDown, Feather, LayoutDashboard, Library } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { NotificationDropdown } from '@/components/layout/NotificationDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
@@ -70,43 +71,80 @@ export function Header() {
         </div>
 
         {/* Auth Buttons */}
-        <div className="hidden lg:flex lg:items-center lg:gap-3">
+        <div className="hidden lg:flex lg:items-center lg:gap-2">
           {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-orange text-primary-foreground">
-                    {profile?.full_name?.[0]?.toUpperCase() || <User className="h-4 w-4" />}
-                  </div>
-                  <span className="max-w-[120px] truncate">
-                    {profile?.full_name || 'My Account'}
-                  </span>
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-popover">
-                <DropdownMenuItem asChild>
-                  <Link to="/my-books">My Books</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/profile">Profile</Link>
-                </DropdownMenuItem>
-                {(isLibrarian || isTeacher) && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard" className="text-primary font-medium">
-                        {isLibrarian ? 'Librarian Dashboard' : 'Teacher Dashboard'}
-                      </Link>
-                    </DropdownMenuItem>
-                  </>
-                )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signOut} className="text-destructive">
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <>
+              {/* Role-specific quick actions */}
+              {!isLibrarian && !isTeacher && (
+                <Link to="/my-dashboard">
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <LayoutDashboard className="h-4 w-4" />
+                    My Dashboard
+                  </Button>
+                </Link>
+              )}
+              
+              {(isLibrarian || isTeacher) && (
+                <Link to="/dashboard">
+                  <Button variant="ghost" size="sm" className="gap-2 text-primary">
+                    <LayoutDashboard className="h-4 w-4" />
+                    {isLibrarian ? 'Control Panel' : 'Dashboard'}
+                  </Button>
+                </Link>
+              )}
+
+              {/* Notifications */}
+              <NotificationDropdown />
+
+              {/* User Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-orange text-primary-foreground">
+                      {profile?.full_name?.[0]?.toUpperCase() || <User className="h-4 w-4" />}
+                    </div>
+                    <span className="max-w-[120px] truncate">
+                      {profile?.full_name || 'My Account'}
+                    </span>
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 bg-popover">
+                  <DropdownMenuItem asChild>
+                    <Link to="/my-dashboard" className="flex items-center gap-2">
+                      <LayoutDashboard className="h-4 w-4" />
+                      My Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/my-books" className="flex items-center gap-2">
+                      <Library className="h-4 w-4" />
+                      My Library
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  {(isLibrarian || isTeacher) && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link to="/dashboard" className="text-primary font-medium">
+                          {isLibrarian ? 'Control Panel' : 'Teacher Dashboard'}
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut} className="text-destructive">
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
           ) : (
             <Link to="/login">
               <Button className="gap-2 shadow-lg shadow-primary/20">
