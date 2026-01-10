@@ -2,95 +2,141 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Ambassador School Dubai Library - Design System
+   Primary Colors from School Logo: #0066CC, #FF9900, #FFCC33, #339933
+   Library-Friendly Secondary Colors: Warm beige, cream, tan, soft grey
+   All colors in HSL format
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Primary School Colors - Adapted for Library */
+    --primary: 210 100% 40%; /* #0066CC - School Blue */
+    --primary-foreground: 0 0% 100%;
+    
+    /* Accent Colors */
+    --accent-orange: 32 100% 50%; /* #FF9900 - Warm Orange */
+    --accent-orange-foreground: 0 0% 100%;
+    
+    --accent-gold: 45 100% 60%; /* #FFCC33 - Bright Gold */
+    --accent-gold-foreground: 222 47% 11%;
+    
+    --accent-green: 120 50% 40%; /* #339933 - Fresh Green */
+    --accent-green-foreground: 0 0% 100%;
 
+    /* Library-Friendly Backgrounds */
+    --background: 40 33% 96%; /* #F9F5EE - Warm Beige/Cream */
+    --foreground: 222 47% 11%;
+
+    /* Card with warm cream tones */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 47% 11%;
 
+    /* Muted/Secondary with tan tones */
+    --secondary: 40 30% 85%; /* #D9C7A0 - Light Brown/Tan */
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 40 20% 92%; /* Lighter tan */
+    --muted-foreground: 222 10% 40%;
+
+    /* Accent for highlights */
+    --accent: 40 30% 90%;
+    --accent-foreground: 222 47% 11%;
+
+    /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Border and Input */
+    --border: 40 20% 85%; /* #E5E5E5 - Soft grey with warmth */
+    --input: 40 20% 88%;
+    --ring: 210 100% 40%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --radius: 0.625rem;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Success state - uses green */
+    --success: 120 50% 40%;
+    --success-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Warning state - uses gold */
+    --warning: 45 100% 50%;
+    --warning-foreground: 222 47% 11%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Sidebar */
+    --sidebar-background: 210 100% 40%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 210 100% 40%;
+    --sidebar-accent: 210 80% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 210 80% 35%;
+    --sidebar-ring: 0 0% 100%;
 
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Chart colors for reading stats */
+    --chart-1: 210 100% 40%;
+    --chart-2: 32 100% 50%;
+    --chart-3: 45 100% 60%;
+    --chart-4: 120 50% 40%;
+    --chart-5: 40 30% 60%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark mode with warm undertones */
+    --primary: 210 100% 55%;
+    --primary-foreground: 222 47% 11%;
+    
+    --accent-orange: 32 100% 55%;
+    --accent-orange-foreground: 222 47% 11%;
+    
+    --accent-gold: 45 100% 65%;
+    --accent-gold-foreground: 222 47% 11%;
+    
+    --accent-green: 120 50% 50%;
+    --accent-green-foreground: 222 47% 11%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --background: 222 30% 10%;
+    --foreground: 40 20% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --card: 222 30% 14%;
+    --card-foreground: 40 20% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 222 20% 20%;
+    --secondary-foreground: 40 20% 95%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --muted: 222 20% 18%;
+    --muted-foreground: 40 10% 65%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 222 20% 22%;
+    --accent-foreground: 40 20% 95%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --popover: 222 30% 12%;
+    --popover-foreground: 40 20% 95%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 222 20% 22%;
+    --input: 222 20% 25%;
+    --ring: 210 100% 55%;
+
+    --success: 120 50% 50%;
+    --success-foreground: 222 47% 11%;
+
+    --warning: 45 100% 55%;
+    --warning-foreground: 222 47% 11%;
+
+    --sidebar-background: 222 30% 12%;
+    --sidebar-foreground: 40 20% 95%;
+    --sidebar-primary: 210 100% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 222 20% 20%;
+    --sidebar-accent-foreground: 40 20% 95%;
+    --sidebar-border: 222 20% 22%;
+    --sidebar-ring: 210 100% 55%;
   }
 }
 
@@ -100,6 +146,138 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar for library feel */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-secondary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+}
+
+/* Typography utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-accent-orange to-accent-gold bg-clip-text text-transparent;
+  }
+
+  .card-shadow {
+    box-shadow: 0 4px 20px -4px hsl(var(--primary) / 0.1),
+                0 2px 8px -2px hsl(var(--foreground) / 0.05);
+  }
+
+  .card-shadow-hover {
+    box-shadow: 0 8px 30px -6px hsl(var(--primary) / 0.15),
+                0 4px 12px -4px hsl(var(--foreground) / 0.08);
+  }
+
+  /* Book cover styling */
+  .book-cover {
+    @apply rounded-lg overflow-hidden shadow-lg transition-transform duration-300;
+    aspect-ratio: 2/3;
+  }
+
+  .book-cover:hover {
+    @apply scale-105;
+    box-shadow: 0 12px 40px -8px hsl(var(--primary) / 0.25);
+  }
+
+  /* Badge animations */
+  .badge-glow {
+    animation: badge-glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes badge-glow {
+    from {
+      box-shadow: 0 0 8px hsl(var(--accent-gold) / 0.4);
+    }
+    to {
+      box-shadow: 0 0 20px hsl(var(--accent-gold) / 0.7);
+    }
+  }
+
+  /* Progress bar animation */
+  .progress-animate {
+    animation: progress-fill 1s ease-out forwards;
+  }
+
+  @keyframes progress-fill {
+    from {
+      width: 0%;
+    }
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  /* Featured book card styling */
+  .featured-book-card {
+    @apply relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-accent-orange/5 to-accent-gold/10;
+  }
+
+  /* Challenge card styling */
+  .challenge-card {
+    @apply relative overflow-hidden rounded-xl border-2 border-transparent transition-all duration-300;
+  }
+
+  .challenge-card:hover {
+    @apply border-accent-orange/30;
+  }
+
+  /* Navigation link styling */
+  .nav-link {
+    @apply relative px-4 py-2 font-medium text-foreground/80 transition-colors hover:text-primary;
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-0 left-1/2 h-0.5 w-0 -translate-x-1/2 bg-primary transition-all duration-300 content-[''];
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+
+  .nav-link.active {
+    @apply text-primary;
+  }
+
+  /* Hero section styling */
+  .hero-pattern {
+    background-image: 
+      radial-gradient(circle at 20% 50%, hsl(var(--primary) / 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(var(--accent-orange) / 0.06) 0%, transparent 40%),
+      radial-gradient(circle at 40% 80%, hsl(var(--accent-gold) / 0.05) 0%, transparent 40%);
+  }
+
+  /* Button variants */
+  .btn-library {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg;
+  }
+
+  .btn-library-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border-2 border-primary bg-transparent px-6 py-3 font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground;
+  }
+
+  .btn-challenge {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-accent-orange to-accent-gold px-6 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105;
   }
 }
