@@ -14,6 +14,9 @@ import { AddEditBookModal } from '@/components/dashboard/AddEditBookModal';
 import { CirculationPanel } from '@/components/dashboard/CirculationPanel';
 import { ReviewModeration } from '@/components/dashboard/ReviewModeration';
 import { ChallengeForm } from '@/components/dashboard/ChallengeForm';
+import { NewsManagement } from '@/components/dashboard/NewsManagement';
+import { EventsManagement } from '@/components/dashboard/EventsManagement';
+import { SuggestionsManagement } from '@/components/dashboard/SuggestionsManagement';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { generatePDF, generateCSV } from '@/lib/pdf-export';
@@ -151,6 +154,9 @@ const LibrarianDashboard = () => {
             <TabsTrigger value="circulation">Circulation</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
             <TabsTrigger value="challenges">Challenges</TabsTrigger>
+            <TabsTrigger value="news">News</TabsTrigger>
+            <TabsTrigger value="events">Events</TabsTrigger>
+            <TabsTrigger value="suggestions">Suggestions</TabsTrigger>
           </TabsList>
 
           {/* Overview */}
@@ -227,6 +233,21 @@ const LibrarianDashboard = () => {
               <Button size="sm" onClick={() => setChallengeModalOpen(true)}><Plus className="h-4 w-4 mr-1" />Create</Button>
             </div>
             <p className="text-muted-foreground">Create and manage reading challenges from here.</p>
+          </TabsContent>
+
+          {/* News */}
+          <TabsContent value="news">
+            <NewsManagement />
+          </TabsContent>
+
+          {/* Events */}
+          <TabsContent value="events">
+            <EventsManagement />
+          </TabsContent>
+
+          {/* Suggestions */}
+          <TabsContent value="suggestions">
+            <SuggestionsManagement />
           </TabsContent>
         </Tabs>
       </div>
