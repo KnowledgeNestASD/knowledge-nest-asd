@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, BookOpen, User, LogIn, ChevronDown, Feather, LayoutDashboard, Library } from 'lucide-react';
+import { Menu, X, BookOpen, User, LogIn, ChevronDown, LayoutDashboard, Library } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,6 +12,7 @@ import {
 import { NotificationDropdown } from '@/components/layout/NotificationDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import ambassadorLogo from '@/assets/ambassador-logo.png';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -40,9 +41,12 @@ export function Header() {
       <nav className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-lg group-hover:shadow-primary/25 transition-all duration-300">
-            <Feather className="h-6 w-6 text-primary-foreground" />
-            <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-accent-gold border-2 border-card" />
+          <div className="relative flex h-12 w-12 items-center justify-center rounded-full overflow-hidden bg-white shadow-lg group-hover:shadow-primary/25 transition-all duration-300">
+            <img 
+              src={ambassadorLogo} 
+              alt="Ambassador School Logo" 
+              className="h-11 w-11 object-contain"
+            />
           </div>
           <div className="hidden sm:block">
             <p className="font-display text-xl font-bold text-foreground tracking-tight">
