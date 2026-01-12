@@ -4,7 +4,7 @@ import { Layout } from '@/components/layout/Layout';
 import { 
   LayoutDashboard, BookOpen, Users, Trophy, Calendar, Newspaper, 
   Settings, Plus, ArrowLeftRight, MessageSquare, Lightbulb, 
-  FileText, ChevronRight, Loader2, Edit, Trash2, Download
+  FileText, ChevronRight, Loader2, Edit, Trash2, Download, Globe, Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,10 +13,12 @@ import { AnimatedCard } from '@/components/ui/animated-container';
 import { AddEditBookModal } from '@/components/dashboard/AddEditBookModal';
 import { CirculationPanel } from '@/components/dashboard/CirculationPanel';
 import { ReviewModeration } from '@/components/dashboard/ReviewModeration';
-import { ChallengeForm } from '@/components/dashboard/ChallengeForm';
+import { ChallengesManagement } from '@/components/dashboard/ChallengesManagement';
 import { NewsManagement } from '@/components/dashboard/NewsManagement';
 import { EventsManagement } from '@/components/dashboard/EventsManagement';
 import { SuggestionsManagement } from '@/components/dashboard/SuggestionsManagement';
+import { UserManagement } from '@/components/dashboard/UserManagement';
+import { ResourcesManagement } from '@/components/dashboard/ResourcesManagement';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { generatePDF, generateCSV } from '@/lib/pdf-export';
@@ -46,7 +48,6 @@ const LibrarianDashboard = () => {
   
   // Modal states
   const [bookModalOpen, setBookModalOpen] = useState(false);
-  const [challengeModalOpen, setChallengeModalOpen] = useState(false);
   const [editingBook, setEditingBook] = useState<any>(null);
   const [deleteBookId, setDeleteBookId] = useState<string | null>(null);
 
@@ -157,6 +158,8 @@ const LibrarianDashboard = () => {
             <TabsTrigger value="news">News</TabsTrigger>
             <TabsTrigger value="events">Events</TabsTrigger>
             <TabsTrigger value="suggestions">Suggestions</TabsTrigger>
+            <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="resources">Resources</TabsTrigger>
           </TabsList>
 
           {/* Overview */}
@@ -166,7 +169,8 @@ const LibrarianDashboard = () => {
                 { title: 'Add Book', desc: 'Add new books to catalogue', icon: Plus, onClick: () => { setEditingBook(null); setBookModalOpen(true); } },
                 { title: 'Circulation', desc: 'Issue and return books', icon: ArrowLeftRight, onClick: () => setActiveTab('circulation') },
                 { title: 'Reviews', desc: 'Moderate pending reviews', icon: MessageSquare, onClick: () => setActiveTab('reviews') },
-                { title: 'Challenges', desc: 'Create reading challenges', icon: Trophy, onClick: () => setChallengeModalOpen(true) },
+                { title: 'Challenges', desc: 'Create reading challenges', icon: Trophy, onClick: () => setActiveTab('challenges') },
+                { title: 'Manage Users', desc: 'Assign roles to users', icon: Shield, onClick: () => setActiveTab('users') },
                 { title: 'Export Report', desc: 'Download library report', icon: FileText, onClick: exportBooks },
               ].map((item, i) => (
                 <AnimatedCard key={item.title} delay={i * 0.1} className="bg-card rounded-xl p-5 shadow-sm border cursor-pointer hover:shadow-md" onClick={item.onClick}>
@@ -228,11 +232,32 @@ const LibrarianDashboard = () => {
 
           {/* Challenges */}
           <TabsContent value="challenges">
-            <div className="flex justify-between mb-4">
-              <h2 className="font-semibold">Challenge Management</h2>
-              <Button size="sm" onClick={() => setChallengeModalOpen(true)}><Plus className="h-4 w-4 mr-1" />Create</Button>
-            </div>
-            <p className="text-muted-foreground">Create and manage reading challenges from here.</p>
+            <ChallengesManagement />
+          </TabsContent>
+
+          {/* News */}
+          <TabsContent value="news">
+            <NewsManagement />
+          </TabsContent>
+
+          {/* Events */}
+          <TabsContent value="events">
+            <EventsManagement />
+          </TabsContent>
+
+          {/* Suggestions */}
+          <TabsContent value="suggestions">
+            <SuggestionsManagement />
+          </TabsContent>
+
+          {/* Users */}
+          <TabsContent value="users">
+            <UserManagement />
+          </TabsContent>
+
+          {/* Resources */}
+          <TabsContent value="resources">
+            <ResourcesManagement />
           </TabsContent>
 
           {/* News */}
@@ -254,7 +279,6 @@ const LibrarianDashboard = () => {
 
       {/* Modals */}
       <AddEditBookModal isOpen={bookModalOpen} onClose={() => setBookModalOpen(false)} book={editingBook} onSuccess={fetchBooks} />
-      <ChallengeForm isOpen={challengeModalOpen} onClose={() => setChallengeModalOpen(false)} onSuccess={() => {}} />
       
       <AlertDialog open={!!deleteBookId} onOpenChange={() => setDeleteBookId(null)}>
         <AlertDialogContent>

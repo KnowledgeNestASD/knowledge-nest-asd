@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, BookOpen, User, LogIn, ChevronDown, LayoutDashboard, Library } from 'lucide-react';
+import { Menu, X, BookOpen, User, LogIn, ChevronDown, LayoutDashboard, Library, GraduationCap, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,6 +12,7 @@ import {
 import { NotificationDropdown } from '@/components/layout/NotificationDropdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 import ambassadorLogo from '@/assets/ambassador-logo.png';
 
 const navigation = [
@@ -35,6 +36,27 @@ export function Header() {
     }
     return location.pathname.startsWith(href);
   };
+
+  // Determine the correct dashboard link based on role
+  const getDashboardLink = () => {
+    if (isLibrarian) return '/dashboard';
+    if (isTeacher) return '/teacher-dashboard';
+    return '/my-dashboard';
+  };
+
+  const getDashboardLabel = () => {
+    if (isLibrarian) return 'Control Panel';
+    if (isTeacher) return 'Teacher Dashboard';
+    return 'My Dashboard';
+  };
+
+  const getRoleBadge = () => {
+    if (isLibrarian) return { label: 'Librarian', icon: Shield, variant: 'default' as const };
+    if (isTeacher) return { label: 'Teacher', icon: GraduationCap, variant: 'secondary' as const };
+    return null;
+  };
+
+  const roleBadge = getRoleBadge();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
@@ -78,24 +100,16 @@ export function Header() {
         <div className="hidden lg:flex lg:items-center lg:gap-2">
           {user ? (
             <>
-              {/* Role-specific quick actions */}
-              {!isLibrarian && !isTeacher && (
-                <Link to="/my-dashboard">
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <LayoutDashboard className="h-4 w-4" />
-                    My Dashboard
-                  </Button>
-                </Link>
-              )}
-              
-              {(isLibrarian || isTeacher) && (
-                <Link to="/dashboard">
-                  <Button variant="ghost" size="sm" className="gap-2 text-primary">
-                    <LayoutDashboard className="h-4 w-4" />
-                    {isLibrarian ? 'Control Panel' : 'Dashboard'}
-                  </Button>
-                </Link>
-              )}
+              {/* Role-specific dashboard button */}
+              <Link to={getDashboardLink()}>
+                <Button variant="ghost" size="sm" className={cn(
+                  "gap-2",
+                  (isLibrarian || isTeacher) && "text-primary font-medium"
+                )}>
+                  <LayoutDashboard className="h-4 w-4" />
+                  {getDashboardLabel()}
+                </Button>
+              </Link>
 
               {/* Notifications */}
               <NotificationDropdown />
@@ -110,16 +124,44 @@ export function Header() {
                     <span className="max-w-[120px] truncate">
                       {profile?.full_name || 'My Account'}
                     </span>
+                    {roleBadge && (
+                      <Badge variant={roleBadge.variant} className="text-[10px] px-1.5 py-0">
+                        {roleBadge.label}
+                      </Badge>
+                    )}
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 bg-popover">
+                  {/* Show role indicator */}
+                  {roleBadge && (
+                    <>
+                      <div className="px-2 py-1.5 text-xs text-muted-foreground flex items-center gap-1.5">
+                        <roleBadge.icon className="h-3 w-3" />
+                        Signed in as {roleBadge.label}
+                      </div>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+
+                  {/* Dashboard link - always shows role-appropriate dashboard */}
                   <DropdownMenuItem asChild>
-                    <Link to="/my-dashboard" className="flex items-center gap-2">
+                    <Link to={getDashboardLink()} className="flex items-center gap-2">
                       <LayoutDashboard className="h-4 w-4" />
-                      My Dashboard
+                      {getDashboardLabel()}
                     </Link>
                   </DropdownMenuItem>
+
+                  {/* Student dashboard for staff (they might want to see student view) */}
+                  {(isLibrarian || isTeacher) && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/my-dashboard" className="flex items-center gap-2">
+                        <BookOpen className="h-4 w-4" />
+                        My Reading Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+
                   <DropdownMenuItem asChild>
                     <Link to="/my-books" className="flex items-center gap-2">
                       <Library className="h-4 w-4" />
@@ -132,16 +174,7 @@ export function Header() {
                       Profile
                     </Link>
                   </DropdownMenuItem>
-                  {(isLibrarian || isTeacher) && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <Link to="/dashboard" className="text-primary font-medium">
-                          {isLibrarian ? 'Control Panel' : 'Teacher Dashboard'}
-                        </Link>
-                      </DropdownMenuItem>
-                    </>
-                  )}
+
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={signOut} className="text-destructive">
                     Sign Out
@@ -195,6 +228,25 @@ export function Header() {
             <div className="border-t pt-3 mt-3">
               {user ? (
                 <>
+                  {/* Role badge for mobile */}
+                  {roleBadge && (
+                    <div className="px-3 py-2 mb-2">
+                      <Badge variant={roleBadge.variant} className="gap-1">
+                        <roleBadge.icon className="h-3 w-3" />
+                        {roleBadge.label}
+                      </Badge>
+                    </div>
+                  )}
+
+                  {/* Role-appropriate dashboard */}
+                  <Link
+                    to={getDashboardLink()}
+                    className="block rounded-lg px-3 py-2 text-base font-medium text-primary hover:bg-muted"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {getDashboardLabel()}
+                  </Link>
+
                   <Link
                     to="/my-books"
                     className="block rounded-lg px-3 py-2 text-base font-medium text-foreground hover:bg-muted"
@@ -209,15 +261,6 @@ export function Header() {
                   >
                     Profile
                   </Link>
-                  {(isLibrarian || isTeacher) && (
-                    <Link
-                      to="/dashboard"
-                      className="block rounded-lg px-3 py-2 text-base font-medium text-primary hover:bg-muted"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {isLibrarian ? 'Librarian Dashboard' : 'Teacher Dashboard'}
-                    </Link>
-                  )}
                   <button
                     onClick={() => {
                       signOut();
