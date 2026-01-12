@@ -58,11 +58,13 @@ interface ChallengeFormProps {
   onClose: () => void;
   challenge?: Challenge | null;
   onSuccess: () => void;
+  restrictToClass?: boolean; // For teachers - restrict to class challenges only
+  defaultClass?: string | null; // Pre-fill class for teachers
 }
 
 const badgeEmojis = ['🏆', '📚', '🌟', '🎯', '🚀', '💎', '🔥', '⭐', '🏅', '🎖️', '👑', '🦁'];
 
-export function ChallengeForm({ isOpen, onClose, challenge, onSuccess }: ChallengeFormProps) {
+export function ChallengeForm({ isOpen, onClose, challenge, onSuccess, restrictToClass = false, defaultClass }: ChallengeFormProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -108,14 +110,15 @@ export function ChallengeForm({ isOpen, onClose, challenge, onSuccess }: Challen
       reset({
         title: '',
         description: '',
-        challenge_type: 'book_count',
+        challenge_type: restrictToClass ? 'class_competition' : 'book_count',
         target_count: 10,
         start_date: today.toISOString().split('T')[0],
         end_date: nextMonth.toISOString().split('T')[0],
+        target_class: defaultClass || '',
         badge_icon: '🏆',
       });
     }
-  }, [challenge, reset]);
+  }, [challenge, reset, restrictToClass, defaultClass]);
 
   const onSubmit = async (data: ChallengeFormData) => {
     if (!user) return;
@@ -209,18 +212,24 @@ export function ChallengeForm({ isOpen, onClose, challenge, onSuccess }: Challen
             <Select
               value={challengeType}
               onValueChange={(value) => setValue('challenge_type', value as any)}
+              disabled={restrictToClass}
             >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="book_count">Book Count</SelectItem>
-                <SelectItem value="genre_exploration">Genre Explorer</SelectItem>
-                <SelectItem value="time_based">Time-Based</SelectItem>
+              <SelectContent className="bg-popover">
+                {!restrictToClass && <SelectItem value="book_count">Book Count</SelectItem>}
+                {!restrictToClass && <SelectItem value="genre_exploration">Genre Explorer</SelectItem>}
+                {!restrictToClass && <SelectItem value="time_based">Time-Based</SelectItem>}
                 <SelectItem value="class_competition">Class Competition</SelectItem>
                 <SelectItem value="house_competition">House Competition</SelectItem>
               </SelectContent>
             </Select>
+            {restrictToClass && (
+              <p className="text-xs text-muted-foreground mt-1">
+                As a teacher, you can only create class or house competitions.
+              </p>
+            )}
           </div>
 
           {/* Target Count */}

@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { StatCard } from '@/components/ui/stat-card';
 import { AnimatedCard, AnimatedList, AnimatedListItem } from '@/components/ui/animated-container';
-import { ChallengeForm } from '@/components/dashboard/ChallengeForm';
+import { ChallengesManagement } from '@/components/dashboard/ChallengesManagement';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { generatePDF } from '@/lib/pdf-export';
@@ -216,51 +216,7 @@ const TeacherDashboard = () => {
 
           {/* Challenges */}
           <TabsContent value="challenges">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="font-semibold">Challenge Management</h2>
-              <Button size="sm" onClick={() => { setEditingChallenge(null); setChallengeModalOpen(true); }}>
-                <Plus className="h-4 w-4 mr-1" />Create Challenge
-              </Button>
-            </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {challenges.map((challenge, i) => (
-                <AnimatedCard key={challenge.id} delay={i * 0.1} className="bg-card rounded-xl p-5 shadow-sm border">
-                  <div className="flex items-start justify-between mb-3">
-                    <span className="text-3xl">{challenge.badge_icon || '🏆'}</span>
-                    <Badge variant={challenge.status === 'active' ? 'default' : 'secondary'}>
-                      {challenge.status}
-                    </Badge>
-                  </div>
-                  <h3 className="font-semibold mb-1">{challenge.title}</h3>
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{challenge.description}</p>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">
-                      <Target className="h-4 w-4 inline mr-1" />
-                      {challenge.target_count || 0} books
-                    </span>
-                    <span className="text-muted-foreground">
-                      <Users className="h-4 w-4 inline mr-1" />
-                      {challenge.challenge_participants?.[0]?.count || 0}
-                    </span>
-                  </div>
-                  <div className="flex gap-2 mt-4">
-                    <Button size="sm" variant="outline" className="flex-1" onClick={() => { setEditingChallenge(challenge); setChallengeModalOpen(true); }}>
-                      Edit
-                    </Button>
-                    <Button size="sm" variant="ghost" className="flex-1">
-                      View
-                    </Button>
-                  </div>
-                </AnimatedCard>
-              ))}
-              {challenges.length === 0 && (
-                <div className="col-span-full text-center py-12 text-muted-foreground">
-                  <Trophy className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                  <p className="font-medium mb-2">No challenges created yet</p>
-                  <Button onClick={() => setChallengeModalOpen(true)}>Create Your First Challenge</Button>
-                </div>
-              )}
-            </div>
+            <ChallengesManagement showOnlyMyChallenge={true} restrictToClass={true} />
           </TabsContent>
 
           {/* Students */}
