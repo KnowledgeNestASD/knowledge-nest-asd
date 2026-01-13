@@ -257,21 +257,21 @@ const Login = () => {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
+          animate={{ opacity: 0.6 }}
           transition={{ duration: 1 }}
-          className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
+          className="absolute top-20 left-10 w-72 h-72 bg-primary/15 rounded-full blur-3xl"
+        />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.4 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="absolute bottom-20 right-10 w-96 h-96 bg-accent-orange/15 rounded-full blur-3xl"
         />
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.3 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="absolute bottom-20 right-10 w-96 h-96 bg-accent-orange/10 rounded-full blur-3xl"
-        />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-gold/5 rounded-full blur-3xl"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-gold/10 rounded-full blur-3xl"
         />
       </div>
 
@@ -290,20 +290,28 @@ const Login = () => {
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center justify-center gap-4 mb-6"
               >
-                <img 
-                  src={ambassadorLogo} 
-                  alt="Ambassador School Dubai" 
-                  className="h-20 w-auto object-contain drop-shadow-lg"
-                />
+                {/* Circular Logo Container */}
+                <div className="h-24 w-24 rounded-full bg-card shadow-xl border-4 border-primary/20 flex items-center justify-center p-3 overflow-hidden">
+                  <img 
+                    src={ambassadorLogo} 
+                    alt="Ambassador School Dubai" 
+                    className="h-full w-full object-contain"
+                  />
+                </div>
               </motion.div>
             </Link>
             <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-3">
               Welcome to{' '}
-              <span className="bg-gradient-to-r from-primary via-accent-orange to-accent-gold bg-clip-text text-transparent">
+              <span 
+                className="font-extrabold bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: 'linear-gradient(to right, #003D7A, #E65100, #CC8800)',
+                }}
+              >
                 Knowledge Nest
               </span>
             </h1>
-            <p className="text-muted-foreground text-lg max-w-md mx-auto">
+            <p className="text-foreground/80 text-lg max-w-md mx-auto font-medium">
               Your gateway to reading excellence at Ambassador School Dubai
             </p>
           </motion.div>
@@ -311,20 +319,20 @@ const Login = () => {
           {/* Main Card */}
           <motion.div 
             variants={itemVariants}
-            className="bg-card/95 backdrop-blur-sm rounded-3xl shadow-2xl border border-border/50 overflow-hidden"
+            className="bg-card backdrop-blur-sm rounded-3xl shadow-2xl border-2 border-primary/20 overflow-hidden"
           >
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="bg-gradient-to-r from-primary/5 via-accent-orange/5 to-accent-gold/5 border-b border-border/50">
+              <div className="bg-gradient-to-r from-primary/10 via-accent-orange/10 to-accent-gold/10 border-b-2 border-primary/20">
                 <TabsList className="grid w-full grid-cols-2 h-16 rounded-none bg-transparent gap-0">
                   <TabsTrigger 
                     value="login" 
-                    className="text-lg font-semibold data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none h-full transition-all"
+                    className="text-lg font-bold data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:border-b-4 data-[state=active]:border-primary rounded-none h-full transition-all text-foreground/70 data-[state=active]:text-primary"
                   >
                     Sign In
                   </TabsTrigger>
                   <TabsTrigger 
                     value="signup" 
-                    className="text-lg font-semibold data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none h-full transition-all"
+                    className="text-lg font-bold data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:border-b-4 data-[state=active]:border-primary rounded-none h-full transition-all text-foreground/70 data-[state=active]:text-primary"
                   >
                     Create Account
                   </TabsTrigger>
@@ -343,26 +351,26 @@ const Login = () => {
                     className="max-w-md mx-auto space-y-6"
                   >
                     <div className="text-center mb-8">
-                      <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-primary to-primary/80 mb-4 shadow-lg shadow-primary/20">
+                      <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-primary to-primary/80 mb-4 shadow-lg shadow-primary/30">
                         <Sparkles className="h-8 w-8 text-primary-foreground" />
                       </div>
                       <h2 className="text-2xl font-bold text-foreground">Welcome Back!</h2>
-                      <p className="text-muted-foreground mt-1">Sign in to continue your reading journey</p>
+                      <p className="text-foreground/70 mt-1 font-medium">Sign in to continue your reading journey</p>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="login-email" className="text-base font-medium">
+                      <Label htmlFor="login-email" className="text-base font-semibold text-foreground">
                         Email Address
                       </Label>
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/60" />
                         <Input
                           id="login-email"
                           type="email"
                           value={loginEmail}
                           onChange={(e) => setLoginEmail(e.target.value)}
                           placeholder="your.email@ambassadorschool.ae"
-                          className="pl-12 h-14 text-base border-2 focus:border-primary transition-colors"
+                          className="pl-12 h-14 text-base border-2 border-border bg-card focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                           required
                           autoComplete="email"
                         />
@@ -370,25 +378,25 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="login-password" className="text-base font-medium">
+                      <Label htmlFor="login-password" className="text-base font-semibold text-foreground">
                         Password
                       </Label>
                       <div className="relative">
-                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/60" />
                         <Input
                           id="login-password"
                           type={showPassword ? 'text' : 'password'}
                           value={loginPassword}
                           onChange={(e) => setLoginPassword(e.target.value)}
                           placeholder="Enter your password"
-                          className="pl-12 pr-12 h-14 text-base border-2 focus:border-primary transition-colors"
+                          className="pl-12 pr-12 h-14 text-base border-2 border-border bg-card focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                           required
                           autoComplete="current-password"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-primary/60 hover:text-primary transition-colors"
                         >
                           {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                         </button>
@@ -397,7 +405,7 @@ const Login = () => {
 
                     <Button 
                       type="submit" 
-                      className="w-full h-14 text-lg gap-2 shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all" 
+                      className="w-full h-14 text-lg gap-2 shadow-lg shadow-primary/30 bg-gradient-to-r from-primary via-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all font-bold" 
                       disabled={isLoading}
                     >
                       {isLoading ? (
@@ -430,10 +438,10 @@ const Login = () => {
                     {/* Step 1: Role Selection */}
                     <div className="mb-8">
                       <div className="text-center mb-6">
-                        <h3 className="font-display text-xl font-semibold text-foreground">
+                        <h3 className="font-display text-xl font-bold text-foreground">
                           I am a...
                         </h3>
-                        <p className="text-muted-foreground text-sm mt-1">
+                        <p className="text-foreground/70 text-sm mt-1 font-medium">
                           Select your role to get started
                         </p>
                       </div>
@@ -451,7 +459,7 @@ const Login = () => {
                               className={cn(
                                 'relative p-6 rounded-2xl border-2 text-left transition-all duration-300',
                                 isSelected
-                                  ? 'border-primary bg-gradient-to-br shadow-lg shadow-primary/10'
+                                  ? 'border-primary bg-gradient-to-br shadow-lg shadow-primary/20'
                                   : 'border-border hover:border-primary/50 hover:bg-muted/50',
                                 isSelected && config.bgGradient
                               )}
@@ -469,13 +477,13 @@ const Login = () => {
                                 )}
                               </AnimatePresence>
                               <div className={cn(
-                                'inline-flex p-3 rounded-xl bg-gradient-to-br text-white mb-4 shadow-lg',
+                                'inline-flex p-3 rounded-xl bg-gradient-to-br text-primary-foreground mb-4 shadow-lg',
                                 config.gradient
                               )}>
                                 <Icon className="h-7 w-7" />
                               </div>
-                              <h4 className="font-display text-lg font-semibold text-foreground">{config.title}</h4>
-                              <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                              <h4 className="font-display text-lg font-bold text-foreground">{config.title}</h4>
+                              <p className="text-sm text-foreground/70 mt-2 line-clamp-2 font-medium">
                                 {config.description}
                               </p>
                             </motion.button>
@@ -493,12 +501,12 @@ const Login = () => {
                           exit={{ opacity: 0, height: 0 }}
                           className="mb-8 overflow-hidden"
                         >
-                          <div className="p-6 rounded-2xl bg-gradient-to-br from-muted/80 to-muted/50 border border-border">
-                            <h3 className="font-display font-semibold text-foreground flex items-center gap-2 mb-3">
+                          <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30">
+                            <h3 className="font-display font-bold text-foreground flex items-center gap-2 mb-3">
                               <Key className="h-5 w-5 text-primary" />
                               {roleConfig[selectedRole].title} Access Code
                             </h3>
-                            <p className="text-sm text-muted-foreground mb-4">
+                            <p className="text-sm text-foreground/70 mb-4 font-medium">
                               Please enter your {roleConfig[selectedRole].title.toLowerCase()} access code to verify your role.
                             </p>
                             <div className="flex gap-3">
@@ -507,12 +515,12 @@ const Login = () => {
                                 value={roleId}
                                 onChange={(e) => setRoleId(e.target.value.toUpperCase())}
                                 placeholder="KN-AMB-XXXX-XXXX-XXX"
-                                className="h-12 font-mono tracking-wider text-base border-2"
+                                className="h-12 font-mono tracking-wider text-base border-2 border-primary/30 bg-card focus:border-primary"
                               />
                               <Button
                                 type="button"
                                 onClick={verifyRoleId}
-                                className="h-12 px-8"
+                                className="h-12 px-8 font-bold"
                               >
                                 Verify
                               </Button>
@@ -536,26 +544,26 @@ const Login = () => {
                             <motion.div
                               initial={{ opacity: 0, scale: 0.9 }}
                               animate={{ opacity: 1, scale: 1 }}
-                              className="p-4 rounded-xl bg-accent-green/10 border border-accent-green/20 flex items-center gap-3"
+                              className="p-4 rounded-xl bg-accent-green/15 border-2 border-accent-green/30 flex items-center gap-3"
                             >
                               <CheckCircle className="h-6 w-6 text-accent-green flex-shrink-0" />
-                              <span className="text-sm font-medium text-accent-green">
+                              <span className="text-sm font-bold text-accent-green">
                                 {roleConfig[selectedRole].title} access verified!
                               </span>
                             </motion.div>
                           )}
 
                           <div className="space-y-2">
-                            <Label htmlFor="signup-name" className="text-base font-medium">Full Name</Label>
+                            <Label htmlFor="signup-name" className="text-base font-semibold text-foreground">Full Name</Label>
                             <div className="relative">
-                              <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                              <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/60" />
                               <Input
                                 id="signup-name"
                                 type="text"
                                 value={signupName}
                                 onChange={(e) => setSignupName(e.target.value)}
                                 placeholder="Enter your full name"
-                                className="pl-12 h-14 text-base border-2 focus:border-primary transition-colors"
+                                className="pl-12 h-14 text-base border-2 border-border bg-card focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                                 required
                                 autoComplete="name"
                               />
@@ -563,36 +571,36 @@ const Login = () => {
                           </div>
 
                           <div className="space-y-2">
-                            <Label htmlFor="signup-email" className="text-base font-medium">School Email</Label>
+                            <Label htmlFor="signup-email" className="text-base font-semibold text-foreground">School Email</Label>
                             <div className="relative">
-                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/60" />
                               <Input
                                 id="signup-email"
                                 type="email"
                                 value={signupEmail}
                                 onChange={(e) => setSignupEmail(e.target.value)}
                                 placeholder="your.email@ambassadorschool.ae"
-                                className="pl-12 h-14 text-base border-2 focus:border-primary transition-colors"
+                                className="pl-12 h-14 text-base border-2 border-border bg-card focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                                 required
                                 autoComplete="email"
                               />
                             </div>
-                            <p className="text-xs text-muted-foreground pl-1">
+                            <p className="text-xs text-foreground/60 pl-1 font-medium">
                               Use your Ambassador School email address
                             </p>
                           </div>
 
                           <div className="space-y-2">
-                            <Label htmlFor="signup-password" className="text-base font-medium">Password</Label>
+                            <Label htmlFor="signup-password" className="text-base font-semibold text-foreground">Password</Label>
                             <div className="relative">
-                              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/60" />
                               <Input
                                 id="signup-password"
                                 type={showPassword ? 'text' : 'password'}
                                 value={signupPassword}
                                 onChange={(e) => setSignupPassword(e.target.value)}
                                 placeholder="Create a secure password"
-                                className="pl-12 pr-12 h-14 text-base border-2 focus:border-primary transition-colors"
+                                className="pl-12 pr-12 h-14 text-base border-2 border-border bg-card focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                                 minLength={6}
                                 required
                                 autoComplete="new-password"
@@ -600,19 +608,19 @@ const Login = () => {
                               <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-primary/60 hover:text-primary transition-colors"
                               >
                                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                               </button>
                             </div>
-                            <p className="text-xs text-muted-foreground pl-1">
+                            <p className="text-xs text-foreground/60 pl-1 font-medium">
                               At least 6 characters
                             </p>
                           </div>
 
                           <Button 
                             type="submit" 
-                            className="w-full h-14 text-lg gap-2 shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all" 
+                            className="w-full h-14 text-lg gap-2 shadow-lg shadow-primary/30 bg-gradient-to-r from-primary via-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all font-bold" 
                             disabled={isLoading}
                           >
                             {isLoading ? (
@@ -640,11 +648,11 @@ const Login = () => {
 
           {/* Guest Notice */}
           <motion.div variants={itemVariants} className="mt-8 text-center">
-            <p className="text-muted-foreground">
+            <p className="text-foreground/70 font-medium">
               Want to browse first?{' '}
               <Link 
                 to="/catalogue" 
-                className="text-primary hover:text-primary/80 font-semibold inline-flex items-center gap-1 transition-colors"
+                className="text-primary hover:text-primary/80 font-bold inline-flex items-center gap-1 transition-colors"
               >
                 Explore our catalogue as a guest
                 <ArrowRight className="h-4 w-4" />
@@ -654,7 +662,7 @@ const Login = () => {
 
           {/* Footer */}
           <motion.div variants={itemVariants} className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-foreground/60 font-medium">
               © 2024 Ambassador School Dubai. All rights reserved.
             </p>
           </motion.div>
