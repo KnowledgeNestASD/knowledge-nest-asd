@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { StatCard } from '@/components/ui/stat-card';
 import { AnimatedCard, AnimatedList, AnimatedListItem } from '@/components/ui/animated-container';
 import { ChallengesManagement } from '@/components/dashboard/ChallengesManagement';
+import { ChallengeForm } from '@/components/dashboard/ChallengeForm';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { generatePDF } from '@/lib/pdf-export';
