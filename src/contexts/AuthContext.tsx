@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-
+import { toast } from 'sonner';
 type AppRole = 'student' | 'teacher' | 'librarian';
 
 interface Profile {
@@ -196,20 +196,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         if (profileError) {
           console.error('Error creating profile:', profileError);
+          toast.error('Failed to create profile. Please contact support.');
         }
 
-        // Assign role
+        // Assign role - this is critical for dashboard access
         const { error: roleError } = await supabase
           .from('user_roles')
-          .upsert({
+          .insert({
             user_id: data.user.id,
             role: role,
-          }, {
-            onConflict: 'user_id'
           });
 
         if (roleError) {
           console.error('Error assigning role:', roleError);
+          // Try upsert as fallback
+          const { error: upsertError } = await supabase
+            .from('user_roles')
+            .upsert({
+              user_id: data.user.id,
+              role: role,
+            }, {
+              onConflict: 'user_id'
+            });
+          
+          if (upsertError) {
+            console.error('Error upserting role:', upsertError);
+            toast.error(`Failed to assign ${role} role. Please contact the librarian.`);
+          } else {
+            console.log(`Successfully assigned ${role} role via upsert`);
+          }
+        } else {
+          console.log(`Successfully assigned ${role} role`);
+        }
+
+        // Verify role was assigned
+        const { data: verifyRole } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', data.user.id)
+          .maybeSingle();
+
+        if (verifyRole) {
+          console.log('Verified role assignment:', verifyRole.role);
+          toast.success(`Account created with ${verifyRole.role} role!`);
+        } else {
+          console.warn('Could not verify role assignment');
         }
       }
 
