@@ -4,6 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Table,
   TableBody,
@@ -40,6 +41,7 @@ interface UserWithRole {
   email: string;
   class_name: string | null;
   house_name: string | null;
+  managed_class: string | null;
   role: AppRole;
 }
 
@@ -51,6 +53,7 @@ export function UserManagement() {
   const [roleFilter, setRoleFilter] = useState<string>('all');
   const [editingUser, setEditingUser] = useState<UserWithRole | null>(null);
   const [newRole, setNewRole] = useState<AppRole>('student');
+  const [newManagedClass, setNewManagedClass] = useState<string>('');
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
@@ -108,26 +111,38 @@ export function UserManagement() {
       .eq('user_id', editingUser.user_id)
       .single();
 
-    let error;
+    let roleError;
     if (existingRole) {
       // Update existing role
       const result = await supabase
         .from('user_roles')
         .update({ role: newRole })
         .eq('user_id', editingUser.user_id);
-      error = result.error;
+      roleError = result.error;
     } else {
       // Insert new role
       const result = await supabase
         .from('user_roles')
         .insert({ user_id: editingUser.user_id, role: newRole });
-      error = result.error;
+      roleError = result.error;
     }
 
-    if (error) {
+    // Update managed_class for teachers
+    if (newRole === 'teacher' && newManagedClass) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ managed_class: newManagedClass })
+        .eq('user_id', editingUser.user_id);
+      
+      if (profileError) {
+        toast({ title: 'Warning', description: 'Role updated but failed to set managed class', variant: 'destructive' });
+      }
+    }
+
+    if (roleError) {
       toast({ title: 'Error', description: 'Failed to update role', variant: 'destructive' });
     } else {
-      toast({ title: 'Success', description: `Role updated to ${newRole}` });
+      toast({ title: 'Success', description: `Role updated to ${newRole}${newRole === 'teacher' && newManagedClass ? ` (manages ${newManagedClass})` : ''}` });
       fetchUsers();
     }
     
@@ -257,9 +272,10 @@ export function UserManagement() {
                         onClick={() => {
                           setEditingUser(user);
                           setNewRole(user.role);
+                          setNewManagedClass(user.managed_class || '');
                         }}
                       >
-                        Change Role
+                        Edit
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -274,48 +290,78 @@ export function UserManagement() {
       <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Change User Role</DialogTitle>
+            <DialogTitle>Edit User</DialogTitle>
             <DialogDescription>
-              Update the role for {editingUser?.full_name || editingUser?.email}
+              Update role and settings for {editingUser?.full_name || editingUser?.email}
             </DialogDescription>
           </DialogHeader>
-          <div className="py-4">
-            <Select value={newRole} onValueChange={(val) => setNewRole(val as AppRole)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-popover">
-                <SelectItem value="student">
-                  <div className="flex items-center gap-2">
-                    <BookOpen className="h-4 w-4" />
-                    Student
-                  </div>
-                </SelectItem>
-                <SelectItem value="teacher">
-                  <div className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4" />
-                    Teacher
-                  </div>
-                </SelectItem>
-                <SelectItem value="librarian">
-                  <div className="flex items-center gap-2">
-                    <Shield className="h-4 w-4" />
-                    Librarian
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            <p className="text-xs text-muted-foreground mt-2">
-              {newRole === 'librarian' && '⚠️ Librarians have full access to manage all library resources.'}
-              {newRole === 'teacher' && '📚 Teachers can create class challenges and view student progress.'}
-              {newRole === 'student' && '📖 Students can borrow books and participate in challenges.'}
-            </p>
+          <div className="py-4 space-y-4">
+            {/* Role Selection */}
+            <div className="space-y-2">
+              <Label>Role</Label>
+              <Select value={newRole} onValueChange={(val) => setNewRole(val as AppRole)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-popover">
+                  <SelectItem value="student">
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="h-4 w-4" />
+                      Student
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="teacher">
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="h-4 w-4" />
+                      Teacher
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="librarian">
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4" />
+                      Librarian
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                {newRole === 'librarian' && '⚠️ Librarians have full access to manage all library resources.'}
+                {newRole === 'teacher' && '📚 Teachers can create class challenges and view student progress.'}
+                {newRole === 'student' && '📖 Students can borrow books and participate in challenges.'}
+              </p>
+            </div>
+
+            {/* Managed Class - Only for Teachers */}
+            {newRole === 'teacher' && (
+              <div className="space-y-2">
+                <Label>Managed Class</Label>
+                <Select value={newManagedClass} onValueChange={setNewManagedClass}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select class to manage" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-popover">
+                    <SelectItem value="">No class assigned</SelectItem>
+                    <SelectItem value="Grade 7A">Grade 7A</SelectItem>
+                    <SelectItem value="Grade 7B">Grade 7B</SelectItem>
+                    <SelectItem value="Grade 8A">Grade 8A</SelectItem>
+                    <SelectItem value="Grade 8B">Grade 8B</SelectItem>
+                    <SelectItem value="Grade 9A">Grade 9A</SelectItem>
+                    <SelectItem value="Grade 9B">Grade 9B</SelectItem>
+                    <SelectItem value="Grade 10A">Grade 10A</SelectItem>
+                    <SelectItem value="Grade 10B">Grade 10B</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Teachers will only see students from their managed class and can create challenges for them.
+                </p>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditingUser(null)}>Cancel</Button>
             <Button onClick={handleRoleChange} disabled={isUpdating}>
               {isUpdating && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-              Update Role
+              Save Changes
             </Button>
           </DialogFooter>
         </DialogContent>

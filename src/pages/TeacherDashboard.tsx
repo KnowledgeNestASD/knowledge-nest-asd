@@ -34,9 +34,9 @@ const TeacherDashboard = () => {
   const [editingChallenge, setEditingChallenge] = useState<any>(null);
   const [classFilter, setClassFilter] = useState('managed');
 
-  // Get managed class from profile
-  // Teachers manage students from their assigned class
-  const managedClass = profile?.class_name;
+  // Get managed class from profile - teachers have a dedicated managed_class field
+  // This is set by librarians in the User Management section
+  const managedClass = profile?.managed_class || profile?.class_name;
 
   useEffect(() => {
     if (isTeacher || isLibrarian) {
