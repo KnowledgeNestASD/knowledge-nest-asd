@@ -12,6 +12,7 @@ interface Profile {
   avatar_url: string | null;
   class_name: string | null;
   house_name: string | null;
+  managed_class: string | null;
 }
 
 interface AuthContextType {

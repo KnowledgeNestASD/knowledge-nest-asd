@@ -16,8 +16,17 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const StudentDashboard = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, isTeacher, isLibrarian } = useAuth();
   const navigate = useNavigate();
+
+  // Role-based redirect: Teachers and Librarians should not see the student dashboard
+  useEffect(() => {
+    if (isLibrarian) {
+      navigate('/dashboard', { replace: true });
+    } else if (isTeacher) {
+      navigate('/teacher-dashboard', { replace: true });
+    }
+  }, [isLibrarian, isTeacher, navigate]);
   const [stats, setStats] = useState({ borrowed: 0, favorites: 0, challenges: 0, badges: 0 });
   const [borrowedBooks, setBorrowedBooks] = useState<any[]>([]);
   const [activeChallenge, setActiveChallenge] = useState<any>(null);
