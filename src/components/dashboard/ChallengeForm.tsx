@@ -138,7 +138,7 @@ export function ChallengeForm({ isOpen, onClose, challenge, onSuccess, restrictT
       created_by: challenge ? undefined : user.id,
     };
 
-    let error;
+    let error: Error | null = null;
     if (challenge) {
       const { error: updateError } = await supabase
         .from('challenges')

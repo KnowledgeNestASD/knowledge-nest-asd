@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { 
   LayoutDashboard, BookOpen, Users, Trophy, Calendar, Newspaper, 
-  Settings, Plus, ArrowLeftRight, MessageSquare, Lightbulb, 
-  FileText, ChevronRight, Loader2, Edit, Trash2, Download, Globe, Shield, Star
+  Plus, ArrowLeftRight, MessageSquare, Lightbulb, 
+  FileText, Edit, Trash2, Download, Globe, Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -21,7 +21,7 @@ import { UserManagement } from '@/components/dashboard/UserManagement';
 import { ResourcesManagement } from '@/components/dashboard/ResourcesManagement';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { generatePDF, generateCSV } from '@/lib/pdf-export';
+import { generatePDF } from '@/lib/pdf-export';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -44,7 +44,7 @@ const LibrarianDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [stats, setStats] = useState({ books: 0, loans: 0, overdue: 0, reviews: 0, users: 0, resources: 0 });
   const [books, setBooks] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true);
   
   // Modal states
   const [bookModalOpen, setBookModalOpen] = useState(false);
