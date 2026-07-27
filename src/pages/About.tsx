@@ -18,6 +18,9 @@ const About = () => {
             Welcome to the Ambassador School Dubai Library – a vibrant hub for learning, 
             discovery, and the joy of reading.
           </p>
+          <p className="mt-4 text-sm text-muted-foreground/80">
+            Developed by Hridansh Kumar
+          </p>
         </div>
 
         {/* Mission */}
@@ -44,11 +47,11 @@ const About = () => {
               </div>
               <ul className="space-y-2 text-muted-foreground">
                 <li className="flex justify-between">
-                  <span>Sunday - Thursday</span>
+                  <span>Monday - Friday</span>
                   <span className="font-medium text-foreground">7:30 AM - 4:00 PM</span>
                 </li>
                 <li className="flex justify-between">
-                  <span>Friday - Saturday</span>
+                  <span>Saturday - Sunday</span>
                   <span className="text-muted-foreground">Closed</span>
                 </li>
               </ul>
@@ -85,7 +88,7 @@ const About = () => {
                 <h3 className="font-semibold text-foreground">Our Team</h3>
               </div>
               <ul className="space-y-2 text-muted-foreground">
-                <li>Head Librarian: Ms. Sarah Johnson</li>
+                <li>Head Librarian: Ms. Priyanka Puthussery</li>
                 <li>Assistant Librarian: Mr. Ahmed Hassan</li>
                 <li>Library Assistants: 3 staff members</li>
               </ul>
@@ -108,7 +111,7 @@ const About = () => {
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <Badge variant="secondary" className="mt-0.5">1</Badge>
-                  <span>Students may borrow up to <strong className="text-foreground">3 books</strong> at a time.</span>
+                  <span>Students may borrow up to <strong className="text-foreground">1 book</strong> at a time.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Badge variant="secondary" className="mt-0.5">2</Badge>
