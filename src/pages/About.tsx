@@ -88,7 +88,7 @@ const About = () => {
                 <h3 className="font-semibold text-foreground">Our Team</h3>
               </div>
               <ul className="space-y-2 text-muted-foreground">
-                <li>Head Librarian: Ms. Sarah Johnson</li>
+                <li>Head Librarian: Ms. Priyanka Puthussery</li>
                 <li>Assistant Librarian: Mr. Ahmed Hassan</li>
                 <li>Library Assistants: 3 staff members</li>
               </ul>
