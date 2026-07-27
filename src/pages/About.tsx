@@ -47,11 +47,11 @@ const About = () => {
               </div>
               <ul className="space-y-2 text-muted-foreground">
                 <li className="flex justify-between">
-                  <span>Sunday - Thursday</span>
+                  <span>Monday - Friday</span>
                   <span className="font-medium text-foreground">7:30 AM - 4:00 PM</span>
                 </li>
                 <li className="flex justify-between">
-                  <span>Friday - Saturday</span>
+                  <span>Saturday - Sunday</span>
                   <span className="text-muted-foreground">Closed</span>
                 </li>
               </ul>
