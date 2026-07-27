@@ -14,9 +14,6 @@ const About = () => {
           <h1 className="font-display text-3xl font-bold text-foreground lg:text-4xl mb-4">
             About Our Library
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Welcome to this sanctuary of stories, knowledge, and imagination — VKnowledge Nest is a space where curiosity is sparked, minds grow, and the love of reading thrives.
-          </p>
           <p className="mt-4 text-base italic text-primary/90 max-w-2xl mx-auto">
             “A reader lives a thousand lives before he dies. The man who never reads lives only one.”
           </p>
