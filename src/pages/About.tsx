@@ -18,6 +18,9 @@ const About = () => {
             Welcome to the Ambassador School Dubai Library – a vibrant hub for learning, 
             discovery, and the joy of reading.
           </p>
+          <p className="mt-4 text-sm text-muted-foreground/80">
+            Developed by Hridansh Kumar
+          </p>
         </div>
 
         {/* Mission */}
