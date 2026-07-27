@@ -111,7 +111,7 @@ const About = () => {
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <Badge variant="secondary" className="mt-0.5">1</Badge>
-                  <span>Students may borrow up to <strong className="text-foreground">3 books</strong> at a time.</span>
+                  <span>Students may borrow up to <strong className="text-foreground">1 book</strong> at a time.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Badge variant="secondary" className="mt-0.5">2</Badge>
