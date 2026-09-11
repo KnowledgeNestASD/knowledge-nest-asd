@@ -1,6 +1,12 @@
 import { ReactNode } from 'react';
+import { Code2 } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface LayoutProps {
   children: ReactNode;
