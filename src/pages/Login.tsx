@@ -663,7 +663,7 @@ const Login = () => {
           {/* Footer */}
           <motion.div variants={itemVariants} className="mt-6 text-center">
             <p className="text-sm text-foreground/60 font-medium">
-              © 2024 Ambassador School Dubai. All rights reserved.
+              © 2026 Ambassador School Dubai. All rights reserved.
             </p>
           </motion.div>
         </motion.div>
